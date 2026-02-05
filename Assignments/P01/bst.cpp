@@ -92,9 +92,9 @@ class Bst {
      * Helper function to find the minimum value node in a subtree.
      * Used to find the inorder successor.
      */
-    Node* minimumValue(Node* curr) {
-        Node* current = current->right;
-        while (curr != NULL && curr->left != NULL)
+    Node* minimumValue(Node* node) {
+        Node* current = node;
+        while (current && current->left)
             current = current->left;
         return current;
     }
@@ -138,7 +138,7 @@ class Bst {
                 //Inorder Successor (smallest in right subtree)
                 Node* successor = minimumValue(subroot->right);
                 subroot->data = successor->data;
-                subroot->right = deleteNode(subroot->right, successor->data);
+                deleteNode(subroot->right, successor->data);
 
                 /*
                 //Inorder Predecessor (largest in left subtree)
@@ -179,6 +179,24 @@ bool unique_value(int *arr, int n, int x) {
 }
 
 int main() {
+    Bst tree;
+    int root = pow(2, 15) / 2;
+    int max = pow(2, 15) - 1;
+    vector<int> arr;
+    arr.push_back(root);
+    tree.insert(root);
+    for (int i = 1; i < 50; i++) {
+        int r = rand() % max;
+        while (!unique_value(arr.data(), arr.size(), r)) {
+            r = rand() % max;
+        }
+        tree.insert(r);
+        arr.push_back(r);
+    }
+
+    tree.print();
+    tree.saveDotFile("bst_snapshot.dot");
+    
     Bst tree2;
     tree2.insert(10);
     tree2.insert(5);
